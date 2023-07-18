@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Correct Responser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      let Dataset = []
+      for (i=1; i<=50; i++) { Dataset.push(0) }
+      let Page = 1
+      function swapWindow() {
+        updatePage()
+        let input = window.getComputedStyle(document.getElementById("inputWindow")).getPropertyValue('display');
+        let output = window.getComputedStyle(document.getElementById("outputWindow")).getPropertyValue('display');
+        document.getElementById("inputWindow").style["display"] = output
+        document.getElementById("outputWindow").style["display"] = input
+      }
+      function submitInput() {
+        // input got formatted
+        let input = document.getElementById("inputValue").value
+        if (input == "") { return false }
+        if (input.includes("-")) { // range of vals
+          input = input.split("-")
+          input = [Number(input[0]),Number(input[1])]
+          if ((input[0] <= 0 || input[0] >= 50+1) || (input[1] <= 0 || input[1] >= 50+1)) { invalidInput(); return false}
+          if (input[0] >= input[1]) { invalidInput(); return false }
+          for (i=input[0]; i<=input[1]; i++) { Dataset[i-1] += 1; updateDisplay(i)}
+        }
+        else {
+          if (input <= 0 || input >= 50+1) { invalidInput(); return false }
+          Dataset[Number(input)-1] += 1; updateDisplay(input)}
+        document.getElementById("inputValue").value = ""
+      }
+      function invalidInput() { alert("Invalid Input") } // ODOT
+      function updateDisplay(num) {
+        document.getElementById(num.toString()).innerText = [num, ". ", Dataset[num-1]].join("")
+      }
+      
+      function displayPrevious() {
+        Page -= 1
+        updatePage()
+        if (Page <= 1) { document.getElementById("buttonPrev").disabled = true}
+        else { document.getElementById("buttonPrev").disabled = false}
+        document.getElementById("buttonNext").disabled = false
+      }
+      function displayNext() {
+        Page += 1
+        updatePage()
+        if (Page >= 50) { document.getElementById("buttonNext").disabled = true}
+        else { document.getElementById("buttonNext").disabled = false}
+        document.getElementById("buttonPrev").disabled = false
+      }
+      function updatePage() {
+        document.getElementById("displayNumber").innerText = Dataset[Page-1]
+        document.getElementById("pageNumber").innerText = [Page, "/50"].join("")
+      }
+    </script>
+    <style>
+      #inputWindow {
+        display: inline;
+      }
+      #outputWindow {
+        display: none;
+      }
+      #displayNumber {
+        text-align: center;
+        font-size: 2500%;
+        margin-top: 20%;
+      }
+
+      body {
+        background-color: black;
+        color: white;
+        color-scheme: dark;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="swapWindow()">Swap Displays</button>
+    <div id="inputWindow">
+      <h2 style="text-align: center;">Correct Responder</h2>
+      <div target="_blank"  >
+        <span>
+          <input type="tel" pattern="(^[0-9]+$)|(^[0-9]+-[0-9]+$)" id="inputValue" autocomplete="off" placeholder="Enter a Number or Range here">
+          <button onclick="submitInput();">Enter</button>
+        </span>
+      </div>
+      <table>
+      <tr><td id="1">1. 0</td><td id="26">26. 0</td></tr>
+      <tr><td id="2">2. 0</td><td id="27">27. 0</td></tr>
+      <tr><td id="3">3. 0</td><td id="28">28. 0</td></tr>
+      <tr><td id="4">4. 0</td><td id="29">29. 0</td></tr>
+      <tr><td id="5">5. 0</td><td id="30">30. 0</td></tr>
+      <tr><td id="6">6. 0</td><td id="31">31. 0</td></tr>
+      <tr><td id="7">7. 0</td><td id="32">32. 0</td></tr>
+      <tr><td id="8">8. 0</td><td id="33">33. 0</td></tr>
+      <tr><td id="9">9. 0</td><td id="34">34. 0</td></tr>
+      <tr><td id="10">10. 0</td><td id="35">35. 0</td></tr>
+      <tr><td id="11">11. 0</td><td id="36">36. 0</td></tr>
+      <tr><td id="12">12. 0</td><td id="37">37. 0</td></tr>
+      <tr><td id="13">13. 0</td><td id="38">38. 0</td></tr>
+      <tr><td id="14">14. 0</td><td id="39">39. 0</td></tr>
+      <tr><td id="15">15. 0</td><td id="40">40. 0</td></tr>
+      <tr><td id="16">16. 0</td><td id="41">41. 0</td></tr>
+      <tr><td id="17">17. 0</td><td id="42">42. 0</td></tr>
+      <tr><td id="18">18. 0</td><td id="43">43. 0</td></tr>
+      <tr><td id="19">19. 0</td><td id="44">44. 0</td></tr>
+      <tr><td id="20">20. 0</td><td id="45">45. 0</td></tr>
+      <tr><td id="21">21. 0</td><td id="46">46. 0</td></tr>
+      <tr><td id="22">22. 0</td><td id="47">47. 0</td></tr>
+      <tr><td id="23">23. 0</td><td id="48">48. 0</td></tr>
+      <tr><td id="24">24. 0</td><td id="49">49. 0</td></tr>
+      <tr><td id="25">25. 0</td><td id="50">50. 0</td></tr>
+      </table>
+    </div>
+    <div id="outputWindow">
+      <div style="display: flex; justify-content: space-around;">
+        <button id="buttonPrev" onclick="displayPrevious()" disabled>Prev</button>
+        <p id="pageNumber"></p>
+        <button id="buttonNext" onclick="displayNext()">Next</button>
+      </div>
+      <h1 id="displayNumber"></h1>
+    </div>
+  </body>
+</html>
